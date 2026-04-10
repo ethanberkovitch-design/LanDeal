@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LanDeal - הפלטפורמה החכמה להשקעה בקרקעות</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏗️</text></svg>">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <div class="logo" onclick="navigate('home')">
+      <div class="logo-icon">LD</div>
+      <div class="logo-text">Lan<span>Deal</span></div>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a onclick="navigate('home')">&#127968; דף הבית</a></li>
+      <li><a onclick="navigate('about')">אודות</a></li>
+      <li><a onclick="navigate('glossary')">מילון מושגים</a></li>
+      <li><a onclick="navigate('contact')">צור קשר</a></li>
+    </ul>
+    <div class="nav-auth" id="navAuth">
+      <button class="btn btn-ghost" onclick="showModal('loginModal')" id="loginBtn">התחברות</button>
+      <button class="btn btn-primary btn-sm" onclick="showModal('registerModal')" id="registerBtn">הרשמה</button>
+      <div id="userMenu" class="hidden" style="display:none;">
+        <button class="btn btn-ghost" onclick="navigate('profile')">
+          <span id="userNameDisplay"></span> &#9662;
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="logout()">יציאה</button>
+      </div>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== MOBILE MENU ===== -->
+<div class="mobile-menu-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <ul class="mobile-menu-links">
+    <li><a onclick="navigate('home'); closeMobileMenu();">&#127968; דף הבית</a></li>
+    <li><a onclick="navigate('buyerChoice'); closeMobileMenu();">&#127960; רוכשי קרקע</a></li>
+    <li><a onclick="navigate('sellerChoice'); closeMobileMenu();">&#128200; מוכרי קרקע</a></li>
+    <li><a onclick="navigate('about'); closeMobileMenu();">&#128218; אודות</a></li>
+    <li><a onclick="navigate('glossary'); closeMobileMenu();">&#128214; מילון מושגים</a></li>
+    <li><a onclick="navigate('contact'); closeMobileMenu();">&#128172; צור קשר</a></li>
+  </ul>
+  <div class="mobile-menu-auth" id="mobileAuth">
+    <button class="btn btn-outline" onclick="closeMobileMenu(); showModal('loginModal');">התחברות</button>
+    <button class="btn btn-primary" onclick="closeMobileMenu(); showModal('registerModal');">הרשמה</button>
+  </div>
+  <div class="mobile-menu-user hidden" id="mobileUserMenu">
+    <div>
+      <span class="mobile-menu-user-name" id="mobileUserName"></span>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button class="btn btn-ghost btn-sm" onclick="navigate('profile'); closeMobileMenu();">איזור אישי</button>
+      <button class="btn btn-outline btn-sm" onclick="logout(); closeMobileMenu();">יציאה</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HOME PAGE ===== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-shapes">
+      <div class="hero-shape"></div>
+      <div class="hero-shape"></div>
+      <div class="hero-shape"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">&#10024; הפלטפורמה הראשונה בישראל</div>
+      <h1>השקעה חכמה בקרקעות<br><span class="highlight">בגישה מבוזרת</span></h1>
+      <p>ברוכים הבאים ל-LanDeal – הפלטפורמה הראשונה בעולם למכירת קרקעות מבוזרות, היוצרת אפיק השקעה חדשני המשלב יתרונות משמעותיים על פני כל אפיק השקעה אחר בשוק כיום.</p>
+      <div class="hero-buttons">
+        <button class="hero-btn hero-btn-buyer" onclick="navigate('buyerChoice')">
+          <span class="hero-btn-icon">&#127968;</span>
+          רוכשי קרקע
+          <span class="hero-btn-sub">מצאו את ההשקעה הבאה שלכם</span>
+        </button>
+        <button class="hero-btn hero-btn-seller" onclick="navigate('sellerChoice')">
+          <span class="hero-btn-icon">&#128200;</span>
+          מוכרי קרקע
+          <span class="hero-btn-sub">מכרו את הקרקע שלכם בקלות</span>
+        </button>
+      </div>
+      <button class="hero-link" onclick="navigate('about')">&#8592; להסבר נוסף על המערכת</button>
+    </div>
+  </section>
+</div>
+
+<!-- ===== BUYER CHOICE PAGE ===== -->
+<div class="page" id="page-buyerChoice">
+  <div class="page-hero">
+    <h1>&#127968; רוכשי קרקע</h1>
+    <p>בחרו את המסלול המתאים לכם</p>
+  </div>
+  <div class="choice-section">
+    <div class="choice-card" onclick="navigate('landForApartment')">
+      <div class="choice-card-icon" style="background: linear-gradient(135deg, #3498db, #2980b9); color: white;">&#127960;</div>
+      <h3>קרקע לדירה</h3>
+      <p>מגוון הצעות לרכישת קרקע עם זכות לדירה במיקומים מובילים ברחבי הארץ</p>
+    </div>
+    <div class="choice-card" onclick="navigate('landForInvestment')">
+      <div class="choice-card-icon" style="background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: white;">&#128176;</div>
+      <h3>קרקע כהשקעה</h3>
+      <p>מסלול השקעה מבוזר חדשני – פיזרו את ההשקעה בין מספר מגרשים להקטנת סיכון</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LAND FOR APARTMENT PAGE ===== -->
+<div class="page" id="page-landForApartment">
+  <div class="page-hero">
+    <h1>&#127960; קרקע לדירה</h1>
+    <p>ריכזנו עבורך מגוון רחב של הצעות מובילות לרכישת קרקעות עם זכות לדירה במיקומים מהמובילים בארץ</p>
+  </div>
+  <div class="page-content">
+    <div class="breadcrumb">
+      <a onclick="navigate('home')">דף הבית</a>
+      <span>&#8250;</span>
+      <a onclick="navigate('buyerChoice')">רוכשי קרקע</a>
+      <span>&#8250;</span>
+      <span>קרקע לדירה</span>
+    </div>
+    <div class="filters-bar">
+      <div class="filter-group">
+        <label>חיפוש</label>
+        <input type="text" placeholder="חפש לפי מיקום, פרויקט..." id="filterSearch" oninput="filterApartmentListings()">
+      </div>
+      <div class="filter-group">
+        <label>מיקום</label>
+        <select id="filterLocation" onchange="filterApartmentListings()">
+          <option value="">הכל</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>מחיר מינימלי</label>
+        <input type="number" placeholder="₪" id="filterMinPrice" oninput="filterApartmentListings()">
+      </div>
+      <div class="filter-group">
+        <label>מחיר מקסימלי</label>
+        <input type="number" placeholder="₪" id="filterMaxPrice" oninput="filterApartmentListings()">
+      </div>
+    </div>
+    <div class="cards-grid" id="apartmentListings"></div>
+  </div>
+</div>
+
+<!-- ===== LAND FOR INVESTMENT PAGE ===== -->
+<div class="page" id="page-landForInvestment">
+  <div class="page-hero">
+    <h1>&#128176; קרקע כהשקעה – מסלול מבוזר</h1>
+    <p>אפיק השקעה חדשני המשלב ביטחון, פוטנציאל תשואה גבוה ופיזור סיכונים</p>
+  </div>
+  <div class="page-content">
+    <div class="breadcrumb">
+      <a onclick="navigate('home')">דף הבית</a>
+      <span>&#8250;</span>
+      <a onclick="navigate('buyerChoice')">רוכשי קרקע</a>
+      <span>&#8250;</span>
+      <span>קרקע כהשקעה</span>
+    </div>
+
+    <div class="investment-intro" id="investmentIntro">
+      <h2>מהי השקעה מבוזרת בקרקעות?</h2>
+      <p>במקום לרכוש קרקע בודדת ולרכז את כל הסיכון בנכס אחד, המסלול המבוזר מאפשר לכם לרכוש זכויות במספר מגרשים שונים, בפיזור גיאוגרפי חכם. כך אתם נהנים מפוטנציאל עליית הערך של מספר קרקעות בו-זמנית, ומקטינים את הסיכון הכולל.</p>
+      <p>המודל מאפשר כניסה בסכומים נמוכים יחסית (החל מ-50,000 &#8362;), עם רישום בטאבו על שמכם, פוטנציאל לתשואה משמעותית, ואפשרות למכירה חוזרת.</p>
+
+      <h2 style="margin-top:32px;">טבלת השוואה – מסלולי השקעה</h2>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>קריטריון</th>
+            <th class="highlight-col">קרקע מבוזרת (LanDeal)</th>
+            <th>קרקע רגילה</th>
+            <th>דירה להשקעה</th>
+            <th>שוק ההון</th>
+            <th>פיקדון בנקאי</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>סכום כניסה מינימלי</td>
+            <td class="highlight-col">50,000 &#8362;</td>
+            <td>200,000+ &#8362;</td>
+            <td>500,000+ &#8362;</td>
+            <td>1,000 &#8362;</td>
+            <td>10,000 &#8362;</td>
+          </tr>
+          <tr>
+            <td>פוטנציאל תשואה</td>
+            <td class="highlight-col">&#9733;&#9733;&#9733;&#9733;&#9733;</td>
+            <td>&#9733;&#9733;&#9733;&#9733;</td>
+            <td>&#9733;&#9733;&#9733;</td>
+            <td>&#9733;&#9733;&#9733;</td>
+            <td>&#9733;</td>
+          </tr>
+          <tr>
+            <td>פיזור סיכונים</td>
+            <td class="highlight-col"><span class="check">&#10003;</span> מספר מגרשים</td>
+            <td><span class="cross">&#10007;</span> נכס בודד</td>
+            <td><span class="cross">&#10007;</span> נכס בודד</td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="check">&#10003;</span></td>
+          </tr>
+          <tr>
+            <td>רישום בטאבו</td>
+            <td class="highlight-col"><span class="check">&#10003;</span></td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="check">&#10003;</span></td>
+            <td><span class="cross">&#10007;</span></td>
+            <td><span class="cross">&#10007;</span></td>
+          </tr>
+          <tr>
+            <td>נזילות</td>
+            <td class="highlight-col">בינונית</td>
+            <td>נמוכה</td>
+            <td>בינונית</td>
+            <td>גבוהה</td>
+            <td>גבוהה</td>
+          </tr>
+          <tr>
+            <td>מורכבות תפעולית</td>
+            <td class="highlight-col">נמוכה (דיגיטלי)</td>
+            <td>גבוהה</td>
+            <td>גבוהה</td>
+            <td>נמוכה</td>
+            <td>נמוכה</td>
+          </tr>
+          <tr>
+            <td>תשואה שנתית שוטפת</td>
+            <td class="highlight-col"><span class="check">&#10003;</span> אופציית פוט</td>
+            <td><span class="cross">&#10007;</span></td>
+            <td><span class="check">&#10003;</span> שכירות</td>
+            <td><span class="check">&#10003;</span> דיבידנדים</td>
+            <td><span class="check">&#10003;</span> ריבית</td>
+          </tr>
+          <tr>
+            <td>ביטחון הנכס</td>
+            <td class="highlight-col">גבוה – קרקע</td>
+            <td>גבוה – קרקע</td>
+            <td>גבוה – נדל"ן</td>
+            <td>נמוך-בינוני</td>
+            <td>גבוה</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="confirm-read" id="confirmReadSection">
+        <input type="checkbox" id="confirmRead" onchange="onConfirmRead()">
+        <label for="confirmRead">קראתי והבנתי את ההסבר על מסלול ההשקעה המבוזרת</label>
+      </div>
+    </div>
+
+    <div id="investmentOffers" class="hidden">
+      <h2 style="font-size:24px; font-weight:800; margin-bottom:24px;">&#128230; חבילות השקעה זמינות</h2>
+      <div class="cards-grid" id="packagesList"></div>
+
+      <div class="budget-input-section">
+        <h3>&#128161; יש לך סכום השקעה מסוים?</h3>
+        <p>הכנס את הסכום ותקבל הצעה ייעודית המותאמת עבורך. מכיוון שמדובר בחיבור שטחים על פי זמינות, ייתכן שתקבל מחיר המקורב לסכום שהכנסת.</p>
+        <div class="budget-form">
+          <input type="number" id="budgetInput" placeholder="למשל: 100,000" min="30000" step="1000">
+          <span>&#8362;</span>
+          <button class="btn btn-accent" onclick="getCustomPackages()">קבל הצעה מותאמת</button>
+        </div>
+      </div>
+
+      <div id="customPackages" class="hidden">
+        <h2 style="font-size:24px; font-weight:800; margin:32px 0 24px;">&#127919; הצעות מותאמות עבורך</h2>
+        <div class="cards-grid" id="customPackagesList"></div>
+      </div>
+
+      <div class="alert alert-success" style="margin-top:24px;">
+        <strong>&#9888;&#65039; שימו לב:</strong> מעבר למחיר החבילה, ישנן עלויות נוספות הכוללות טיפול משפטי של עורכי דין, דמי רישום ועוד. פירוט מלא יינתן בשלב ההזמנה.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SELLER CHOICE PAGE ===== -->
+<div class="page" id="page-sellerChoice">
+  <div class="page-hero">
+    <h1>&#128200; מוכרי קרקע</h1>
+    <p>בחרו את הדרך הנוחה ביותר למכור את הקרקע שלכם</p>
+  </div>
+  <div class="seller-choices">
+    <div class="seller-card" onclick="handleSellerChoice('private')">
+      <div class="seller-card-icon">&#127969;</div>
+      <h3>בעל קרקע פרטי</h3>
+      <p>בעל קרקע המעוניין למכור שטח שבבעלותו. העלו את פרטי הקרקע וקבלו הצעת מחיר תוך 72 שעות.</p>
+    </div>
+    <div class="seller-card" onclick="handleSellerChoice('system')">
+      <div class="seller-card-icon">&#128187;</div>
+      <h3>רכשתי דרך LanDeal</h3>
+      <p>רכשתם קרקע דרך המערכת ומעוניינים למכור? היכנסו לחשבון שלכם וצפו בקרקעות שרכשתם.</p>
+    </div>
+    <div class="seller-card" onclick="handleSellerChoice('marketer')">
+      <div class="seller-card-icon">&#129309;</div>
+      <h3>משווק קרקעות</h3>
+      <p>חברה או משווק המעוניינים בשיתוף פעולה? הצטרפו למערכת ומכרו דרך הפלטפורמה שלנו.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SELLER PRIVATE FORM PAGE ===== -->
+<div class="page" id="page-sellerPrivate">
+  <div class="page-hero">
+    <h1>&#127969; מכירת קרקע פרטית</h1>
+    <p>מלאו את הפרטים ונחזור אליכם עם הצעת מחיר תוך 72 שעות</p>
+  </div>
+  <div class="page-content" style="max-width:700px; margin:0 auto;">
+    <div class="breadcrumb">
+      <a onclick="navigate('home')">דף הבית</a>
+      <span>&#8250;</span>
+      <a onclick="navigate('sellerChoice')">מוכרי קרקע</a>
+      <span>&#8250;</span>
+      <span>בעל קרקע פרטי</span>
+    </div>
+    <div style="background:white; border-radius:var(--radius-lg); padding:40px; box-shadow:var(--shadow-md);">
+      <div id="sellerFormAlert"></div>
+      <div class="form-group">
+        <label>מיקום הקרקע</label>
+        <input type="text" id="sellerLocation" placeholder="עיר / יישוב / גוש חלקה">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>שם הבעלים</label>
+          <input type="text" id="sellerOwnerName" placeholder="שם מלא">
+        </div>
+        <div class="form-group">
+          <label>סה"כ שטח החלקה (מ"ר)</label>
+          <input type="number" id="sellerTotalArea" placeholder="שטח כולל">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>שטח למכירה (מ"ר)</label>
+          <input type="number" id="sellerSaleArea" placeholder="השטח שברצונך למכור">
+        </div>
+        <div class="form-group">
+          <label>חלק הבעלות</label>
+          <input type="text" id="sellerOwnership" placeholder="לדוגמה: 1/4 מהחלקה">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>פרטים נוספים</label>
+        <textarea id="sellerNotes" placeholder="מידע נוסף על הקרקע, תוכניות, מצב תכנוני..."></textarea>
+      </div>
+      <button class="btn btn-primary btn-lg" style="width:100%;" onclick="submitSellerRequest('private')">שלח לבדיקה</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SELLER SYSTEM PAGE ===== -->
+<div class="page" id="page-sellerSystem">
+  <div class="page-hero">
+    <h1>&#128187; הקרקעות שרכשתי</h1>
+    <p>צפו בקרקעות שרכשתם דרך המערכת והעמידו למכירה</p>
+  </div>
+  <div class="page-content">
+    <div class="breadcrumb">
+      <a onclick="navigate('home')">דף הבית</a>
+      <span>&#8250;</span>
+      <a onclick="navigate('sellerChoice')">מוכרי קרקע</a>
+      <span>&#8250;</span>
+      <span>רכשתי דרך LanDeal</span>
+    </div>
+    <div id="myPurchasedLands"></div>
+  </div>
+</div>
+
+<!-- ===== SELLER MARKETER PAGE ===== -->
+<div class="page" id="page-sellerMarketer">
+  <div class="page-hero">
+    <h1>&#129309; משווקי קרקעות</h1>
+    <p>הצטרפו לפלטפורמה ושווקו קרקעות בצורה חכמה</p>
+  </div>
+  <div class="page-content" style="max-width:700px; margin:0 auto;">
+    <div class="breadcrumb">
+      <a onclick="navigate('home')">דף הבית</a>
+      <span>&#8250;</span>
+      <a onclick="navigate('sellerChoice')">מוכרי קרקע</a>
+      <span>&#8250;</span>
+      <span>משווק קרקעות</span>
+    </div>
+    <div class="choice-section" style="padding:0;">
+      <div class="choice-card" onclick="handleMarketerChoice('apartment')">
+        <div class="choice-card-icon" style="background: linear-gradient(135deg, #3498db, #2980b9); color: white;">&#127960;</div>
+        <h3>מכירת קרקע לדירה</h3>
+        <p>העלו שטח למכירה עם זכויות בנייה לדירה</p>
+      </div>
+      <div class="choice-card" onclick="handleMarketerChoice('investment')">
+        <div class="choice-card-icon" style="background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: white;">&#128176;</div>
+        <h3>שיתוף פעולה – קרקע מבוזרת</h3>
+        <p>הצטרפו לפגישה בחברה לבחינת שיתוף פעולה</p>
+      </div>
+    </div>
+    <div id="marketerForm" class="hidden" style="background:white; border-radius:var(--radius-lg); padding:40px; box-shadow:var(--shadow-md); margin-top:24px;">
+      <div id="marketerFormAlert"></div>
+      <h3 style="margin-bottom:20px;">העלאת קרקע לשיווק</h3>
+      <div class="form-group">
+        <label>שם הפרויקט / הקרקע</label>
+        <input type="text" id="marketerTitle" placeholder="שם הפרויקט">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>מיקום</label>
+          <input type="text" id="marketerLocation" placeholder="עיר / יישוב">
+        </div>
+        <div class="form-group">
+          <label>שטח (מ"ר)</label>
+          <input type="number" id="marketerArea" placeholder="שטח">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>תיאור</label>
+        <textarea id="marketerDesc" placeholder="תיאור הקרקע והפרויקט"></textarea>
+      </div>
+      <button class="btn btn-primary btn-lg" style="width:100%;" onclick="submitSellerRequest('marketer')">שלח לבדיקה</button>
+    </div>
+    <div id="marketerMeeting" class="hidden" style="background:white; border-radius:var(--radius-lg); padding:40px; box-shadow:var(--shadow-md); margin-top:24px; text-align:center;">
+      <div style="font-size:48px; margin-bottom:16px;">&#128197;</div>
+      <h3 style="margin-bottom:12px;">נשמח לפגוש אותך!</h3>
+      <p style="color:var(--text-medium); margin-bottom:24px;">לבחינת שיתוף פעולה במכירת קרקע מבוזרת, אנא צרו קשר ונקבע פגישה במשרדנו.</p>
+      <button class="btn btn-accent btn-lg" onclick="navigate('contact')">צור קשר לתיאום פגישה</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LISTING DETAIL PAGE ===== -->
+<div class="page" id="page-listingDetail">
+  <div class="page-hero" id="listingDetailHero">
+    <h1 id="listingDetailTitle"></h1>
+    <p id="listingDetailLocation"></p>
+  </div>
+  <div class="page-content">
+    <div class="breadcrumb" id="listingBreadcrumb"></div>
+    <div class="listing-detail">
+      <div>
+        <div class="listing-map" id="listingMap">&#128205;</div>
+        <div class="listing-info" id="listingDetailInfo"></div>
+      </div>
+      <div class="listing-sidebar">
+        <div class="listing-price-card" id="listingPriceCard"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROFILE PAGE ===== -->
+<div class="page" id="page-profile">
+  <div class="page-hero">
+    <h1>&#128100; האיזור האישי</h1>
+    <p>נהלו את החשבון, הרכישות והקרקעות שלכם</p>
+  </div>
+  <div class="page-content">
+    <div class="profile-section">
+      <div class="profile-sidebar">
+        <div class="profile-avatar" id="profileAvatar"></div>
+        <div class="profile-name" id="profileName"></div>
+        <div class="profile-email" id="profileEmail"></div>
+        <ul class="profile-menu">
+          <li class="active" onclick="showProfileTab('transactions')">העסקאות שלי</li>
+          <li onclick="showProfileTab('listings')">הקרקעות שלי</li>
+          <li onclick="showProfileTab('requests')">הבקשות שלי</li>
+        </ul>
+      </div>
+      <div class="profile-content" id="profileContent">
+        <p style="text-align:center; color:var(--text-light);">טוען נתונים...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ABOUT PAGE ===== -->
+<div class="page" id="page-about">
+  <div class="page-hero">
+    <h1>&#128218; אודות LanDeal</h1>
+    <p>הפלטפורמה הראשונה בעולם למכירת קרקעות מבוזרות</p>
+  </div>
+  <div class="page-content">
+    <div class="about-section">
+      <div class="about-features">
+        <div class="about-feature" onclick="document.getElementById('about-security').scrollIntoView({behavior:'smooth'})" style="cursor:pointer;">
+          <div class="about-feature-icon">&#128274;</div>
+          <h3>ביטחון</h3>
+          <p>רישום מלא בטאבו על שם הרוכש</p>
+        </div>
+        <div class="about-feature" onclick="document.getElementById('about-potential').scrollIntoView({behavior:'smooth'})" style="cursor:pointer;">
+          <div class="about-feature-icon">&#128200;</div>
+          <h3>פוטנציאל</h3>
+          <p>עליית ערך משמעותית של מאות אחוזים</p>
+        </div>
+        <div class="about-feature" onclick="document.getElementById('about-diversify').scrollIntoView({behavior:'smooth'})" style="cursor:pointer;">
+          <div class="about-feature-icon">&#127919;</div>
+          <h3>פיזור</h3>
+          <p>השקעה מבוזרת במספר מגרשים</p>
+        </div>
+        <div class="about-feature" onclick="document.getElementById('about-returns').scrollIntoView({behavior:'smooth'})" style="cursor:pointer;">
+          <div class="about-feature-icon">&#128176;</div>
+          <h3>תשואה</h3>
+          <p>אופציית פוט לתשואה שנתית שוטפת</p>
+        </div>
+      </div>
+
+      <!-- סרטון הסבר -->
+      <div style="margin:48px 0; text-align:center;">
+        <h2 style="margin-bottom:20px;">&#127909; סרטון הסבר – המודל החדש להשקעה בקרקעות</h2>
+        <video controls style="width:100%; max-width:800px; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg);">
+          <source src="/video.mp4" type="video/mp4">
+          הדפדפן שלך לא תומך בהצגת וידאו.
+        </video>
+      </div>
+
+      <h2>מה זה LanDeal?</h2>
+      <p>LanDeal היא פלטפורמה דיגיטלית חדשנית המאפשרת מסחר בזכויות קרקע באופן מבוזר. המערכת מחברת בין בעלי קרקע המעוניינים למכור חלקים מזכויותיהם, לבין רוכשים פרטיים המחפשים אפיק השקעה חכם ומגוון.</p>
+
+      <h2 id="about-security">&#128274; ביטחון – רישום בטאבו</h2>
+      <p>כל רכישה דרך LanDeal כוללת רישום מלא בטאבו (לשכת רישום המקרקעין) על שם הרוכש. זוהי ההוכחה החזקה ביותר לבעלות על מקרקעין בישראל. בניגוד להשקעות בשוק ההון או בקריפטו, כאן יש לכם נכס מוחשי, רשום ומוגן בחוק.</p>
+
+      <h2 id="about-potential">&#128200; פוטנציאל – עליית ערך משמעותית</h2>
+      <p>קרקעות חקלאיות שעוברות הפשרה ושינוי ייעוד למגורים יכולות לעלות בערכן במאות אחוזים. המודל של LanDeal מאפשר לכם להיחשף לפוטנציאל הזה גם בסכומים נמוכים יחסית, החל מ-50,000 &#8362;. לא קיים כיום מסלול השקעה אחר המציע פוטנציאל עליית ערך דומה.</p>
+
+      <h2 id="about-diversify">&#127919; פיזור – השקעה מבוזרת</h2>
+      <p>הרעיון המרכזי הוא לאפשר לרוכש לקנות "תמהיל" של זכויות במספר מגרשים שונים – במקום להשקיע את כל הכסף בקרקע אחת. כך מתקבל פיזור סיכונים גיאוגרפי, פוטנציאל תשואה גבוה, וסיכוי גדול יותר "לפגוש את הכסף" מוקדם יותר כאשר אחת הקרקעות עוברת שינוי ייעוד.</p>
+
+      <h2 id="about-returns">&#128176; תשואה – אופציית פוט שנתית</h2>
+      <p>המודל כולל אופציית פוט המאפשרת למכור בחזרה חלקים קטנים מהנכס במחיר גבוה מהמחיר בו נרכש – ליצירת תשואה שוטפת בחמש השנים הראשונות. כך אתם לא רק מחכים לאירוע מימוש עתידי, אלא גם נהנים מהכנסה שנתית מהנכס.</p>
+
+      <h2>הערך למוכרים</h2>
+      <p>בעלי קרקע מקבלים כלי דיגיטלי פשוט ונגיש למכירה חלקית של הקרקע שלהם – מבלי להיכנס לעסקה מלאה או למשא ומתן מורכב. פתרון לצורכי נזילות נקודתית, בדומה לעיקרון של משכנתא הפוכה.</p>
+
+      <h2>הערך לרוכשים</h2>
+      <p>רוכשים נהנים מכניסה בסכומים נמוכים, רישום בטאבו, פיזור סיכונים בין מספר מגרשים, ואופציית פוט המאפשרת למכור בחזרה חלקים במחיר גבוה יותר – ליצירת תשואה שוטפת.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GLOSSARY PAGE ===== -->
+<div class="page" id="page-glossary">
+  <div class="page-hero">
+    <h1>&#128214; מילון מושגים</h1>
+    <p>כל המושגים שצריך להכיר בעולם הקרקעות</p>
+  </div>
+  <div class="page-content" style="max-width:800px; margin:0 auto;">
+    <div class="glossary-list">
+      <div class="glossary-item">
+        <div class="glossary-term">קרקע מבוזרת</div>
+        <div class="glossary-def">מודל השקעה בו הרוכש רוכש זכויות במספר מגרשים שונים במקום בקרקע בודדת, לצורך פיזור סיכונים.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">טאבו</div>
+        <div class="glossary-def">לשכת רישום המקרקעין – המקום בו נרשמות זכויות הבעלות על נכסי מקרקעין בישראל. רישום בטאבו מהווה את ההוכחה החזקה ביותר לבעלות.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">תב"ע (תוכנית בניין עיר)</div>
+        <div class="glossary-def">תוכנית סטטוטורית המגדירה את ייעוד הקרקע, זכויות הבנייה, השימושים המותרים ותנאים נוספים.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">שינוי ייעוד</div>
+        <div class="glossary-def">תהליך סטטוטורי של שינוי ייעוד קרקע (למשל, מחקלאית למגורים). תהליך שיכול להביא לעליית ערך משמעותית.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">הפשרת קרקע</div>
+        <div class="glossary-def">תהליך בו קרקע חקלאית הופכת לקרקע עם זכויות בנייה, בדרך כלל באמצעות שינוי תב"ע.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">אופציית פוט</div>
+        <div class="glossary-def">זכות למכור נכס במחיר קבוע מראש. במודל LanDeal – אפשרות למכור בחזרה חלקים מהקרקע במחיר גבוה מהמחיר בו נרכשה.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">תמהיל השקעה</div>
+        <div class="glossary-def">שילוב של מספר נכסים או השקעות בתיק אחד, המגוון את הסיכון והפוטנציאל.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">גוש/חלקה</div>
+        <div class="glossary-def">מספרי זיהוי ייחודיים לכל מגרש קרקע בישראל, המשמשים לרישום בטאבו ובמפות.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">נזילות</div>
+        <div class="glossary-def">היכולת להמיר נכס לכסף מזומן במהירות ובקלות. נכס נזיל הוא נכס שניתן למכור מהר.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CONTACT PAGE ===== -->
+<div class="page" id="page-contact">
+  <div class="page-hero">
+    <h1>&#128172; צור קשר</h1>
+    <p>נשמח לעמוד לרשותכם בכל שאלה</p>
+  </div>
+  <div class="page-content" style="max-width:1000px; margin:0 auto;">
+    <div class="contact-grid">
+      <div class="contact-info-card">
+        <h2>דברו איתנו</h2>
+        <p>צוות LanDeal זמין עבורכם לכל שאלה, בקשה או הצעת שיתוף פעולה.</p>
+        <div class="contact-item">
+          <div class="contact-item-icon">&#128222;</div>
+          <div>
+            <div style="font-weight:600;">טלפון</div>
+            <div style="opacity:0.8;">03-1234567</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">&#128231;</div>
+          <div>
+            <div style="font-weight:600;">אימייל</div>
+            <div style="opacity:0.8;">info@landeal.co.il</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">&#128205;</div>
+          <div>
+            <div style="font-weight:600;">כתובת</div>
+            <div style="opacity:0.8;">רחוב הברזל 30, תל אביב</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">&#128338;</div>
+          <div>
+            <div style="font-weight:600;">שעות פעילות</div>
+            <div style="opacity:0.8;">א'-ה' 09:00-18:00</div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-card">
+        <h2 style="font-size:24px; font-weight:700; margin-bottom:24px;">שלחו לנו הודעה</h2>
+        <div id="contactAlert"></div>
+        <div class="form-group">
+          <label>שם מלא</label>
+          <input type="text" id="contactName" placeholder="השם שלך">
+        </div>
+        <div class="form-group">
+          <label>אימייל</label>
+          <input type="email" id="contactEmail" placeholder="example@mail.com" dir="ltr">
+        </div>
+        <div class="form-group">
+          <label>טלפון</label>
+          <input type="tel" id="contactPhone" placeholder="050-1234567" dir="ltr">
+        </div>
+        <div class="form-group">
+          <label>הודעה</label>
+          <textarea id="contactMessage" placeholder="כתבו את ההודעה שלכם..."></textarea>
+        </div>
+        <button class="btn btn-primary btn-lg" style="width:100%;" onclick="submitContact()">שלח הודעה</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LOGIN MODAL ===== -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>התחברות</h2>
+      <button class="modal-close" onclick="hideModal('loginModal')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div id="loginAlert"></div>
+      <div class="form-group">
+        <label>אימייל</label>
+        <input type="email" id="loginEmail" placeholder="example@mail.com" dir="ltr">
+      </div>
+      <div class="form-group">
+        <label>סיסמה</label>
+        <input type="password" id="loginPassword" placeholder="הסיסמה שלך">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary btn-lg" style="flex:1;" onclick="login()">התחבר</button>
+    </div>
+    <div style="text-align:center; padding:0 32px 24px;">
+      <span style="color:var(--text-light); font-size:14px;">אין לך חשבון? </span>
+      <a style="color:var(--primary); cursor:pointer; font-weight:600; font-size:14px;" onclick="hideModal('loginModal'); showModal('registerModal')">הירשם עכשיו</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== REGISTER MODAL ===== -->
+<div class="modal-overlay" id="registerModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>הרשמה</h2>
+      <button class="modal-close" onclick="hideModal('registerModal')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div id="registerAlert"></div>
+      <div class="form-group">
+        <label>שם מלא</label>
+        <input type="text" id="registerName" placeholder="השם המלא שלך">
+      </div>
+      <div class="form-group">
+        <label>אימייל</label>
+        <input type="email" id="registerEmail" placeholder="example@mail.com" dir="ltr">
+      </div>
+      <div class="form-group">
+        <label>טלפון</label>
+        <input type="tel" id="registerPhone" placeholder="050-1234567" dir="ltr">
+      </div>
+      <div class="form-group">
+        <label>סיסמה</label>
+        <input type="password" id="registerPassword" placeholder="לפחות 6 תווים">
+      </div>
+      <div class="form-group">
+        <label>סוג משתמש</label>
+        <select id="registerType">
+          <option value="buyer">רוכש</option>
+          <option value="seller">מוכר</option>
+          <option value="marketer">משווק</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary btn-lg" style="flex:1;" onclick="register()">הירשם</button>
+    </div>
+    <div style="text-align:center; padding:0 32px 24px;">
+      <span style="color:var(--text-light); font-size:14px;">כבר יש לך חשבון? </span>
+      <a style="color:var(--primary); cursor:pointer; font-weight:600; font-size:14px;" onclick="hideModal('registerModal'); showModal('loginModal')">התחבר</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ORDER MODAL ===== -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>&#128230; אישור הזמנה</h2>
+      <button class="modal-close" onclick="hideModal('orderModal')">&#10005;</button>
+    </div>
+    <div class="modal-body" id="orderModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary btn-lg" style="flex:1;" id="confirmOrderBtn">אשר והזמן</button>
+      <button class="btn btn-outline" onclick="hideModal('orderModal')">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TERMS PAGE ===== -->
+<div class="page" id="page-terms">
+  <div class="page-hero">
+    <h1>&#128220; תנאי שימוש</h1>
+    <p>עודכן לאחרונה: אפריל 2026</p>
+  </div>
+  <div class="page-content" style="max-width:800px; margin:0 auto;">
+    <div class="about-section">
+      <h2>1. כללי</h2>
+      <p>ברוכים הבאים לאתר LanDeal (להלן: "האתר" או "הפלטפורמה"). האתר מופעל על ידי חברת לנדיל בע"מ (להלן: "החברה"). השימוש באתר, לרבות גלישה, רישום, ביצוע עסקאות ו/או כל פעולה אחרת, מהווה הסכמה מצדך לתנאי שימוש אלה. אם אינך מסכים לתנאים, אנא הימנע משימוש באתר.</p>
+
+      <h2>2. הגדרות</h2>
+      <p>"משתמש" – כל אדם או גוף הגולש באתר ו/או הנרשם אליו. "שירותים" – כלל השירותים המוצעים באתר, לרבות הצגת הצעות קרקע, ביצוע עסקאות, ומתן מידע. "תוכן" – כל מידע, טקסט, תמונה, נתון או חומר אחר המוצג באתר.</p>
+
+      <h2>3. הרשמה וחשבון משתמש</h2>
+      <p>חלק מהשירותים באתר מותנים ברישום. בעת ההרשמה, המשתמש מתחייב למסור פרטים מדויקים, מלאים ועדכניים. המשתמש אחראי לשמירה על סודיות הסיסמה ולכל פעולה המתבצעת בחשבונו. החברה רשאית לסרב לאשר רישום או לבטל חשבון משתמש על פי שיקול דעתה הבלעדי, ובפרט במקרה של מסירת פרטים כוזבים או שימוש לרעה באתר.</p>
+
+      <h2>4. אופי השירות</h2>
+      <p>הפלטפורמה משמשת כמתווכת דיגיטלית בין מוכרי קרקע לרוכשים פוטנציאליים. החברה אינה צד ישיר לעסקאות המקרקעין המתבצעות באמצעות הפלטפורמה, אלא מספקת תשתית טכנולוגית, מידע ושירותי ליווי. כל עסקת מקרקעין כפופה לחתימה על מסמכים משפטיים נפרדים, בליווי עורכי דין מוסמכים.</p>
+
+      <h2>5. מידע והצעות באתר</h2>
+      <p>המידע המוצג באתר, לרבות מחירים, שטחים, מיקומים ותיאורי קרקעות, מוצג להמחשה בלבד ואינו מהווה הצעה מחייבת. החברה עושה מאמץ להציג מידע מדויק ועדכני, אך אינה אחראית לטעויות או אי-דיוקים. תנאי העסקה המחייבים יהיו אלה המופיעים במסמכים המשפטיים החתומים. מחירים וזמינות עשויים להשתנות ללא הודעה מוקדמת.</p>
+
+      <h2>6. מקדמה ותנאי תשלום</h2>
+      <p>ביצוע הזמנה באתר מותנה בתשלום מקדמה בשיעור של 2.5% מסך העסקה. המקדמה אינה מהווה סגירת עסקה ומטרתה לשריין את ההצעה ולאפשר הכנת מסמכים משפטיים. תנאי ביטול והחזר מקדמה יפורטו בהסכם ההזמנה הספציפי. יתרת התשלום תשולם בהתאם ללוח זמנים שייקבע בהסכם.</p>
+
+      <h2>7. קניין רוחני</h2>
+      <p>כל הזכויות באתר, לרבות עיצוב, טקסט, גרפיקה, לוגו, סימני מסחר, קוד תוכנה ותכנים, שייכות לחברה או לצדדים שלישיים שהעניקו לחברה רישיון שימוש. אין להעתיק, לשכפל, להפיץ, לפרסם או לעשות כל שימוש מסחרי בתכנים ללא אישור מראש ובכתב מהחברה.</p>
+
+      <h2>8. הגבלת אחריות</h2>
+      <p>החברה אינה אחראית לנזקים ישירים או עקיפים הנובעים משימוש באתר או מהסתמכות על מידע המוצג בו. החברה אינה אחראית לזמינות האתר, להפרעות, תקלות או שגיאות. השירותים ניתנים "כפי שהם" (AS IS) ללא אחריות מכל סוג שהוא, מפורשת או משתמעת. המשתמש מצהיר כי הוא מודע לסיכונים הכרוכים בהשקעה בקרקעות ופועל בהתאם לשיקול דעתו.</p>
+
+      <h2>9. שיפוי</h2>
+      <p>המשתמש מתחייב לשפות את החברה, מנהליה, עובדיה ושלוחיה בגין כל נזק, הפסד, תביעה או הוצאה, לרבות שכר טרחת עו"ד, הנובעים משימוש שלא כדין באתר או מהפרת תנאי שימוש אלה.</p>
+
+      <h2>10. שינויים בתנאי השימוש</h2>
+      <p>החברה רשאית לשנות תנאים אלה בכל עת. שינויים מהותיים יפורסמו באתר ו/או יישלחו למשתמשים רשומים. המשך השימוש באתר לאחר פרסום השינויים מהווה הסכמה לתנאים המעודכנים.</p>
+
+      <h2>11. דין חל וסמכות שיפוט</h2>
+      <p>תנאי שימוש אלה כפופים לדין הישראלי בלבד. לבתי המשפט המוסמכים במחוז תל אביב-יפו תהיה סמכות שיפוט בלעדית בכל סכסוך הנוגע לתנאים אלה או לשימוש באתר.</p>
+
+      <h2>12. יצירת קשר</h2>
+      <p>לשאלות או בירורים בנוגע לתנאי שימוש אלה, ניתן לפנות אלינו בדוא"ל: legal@landeal.co.il או בטלפון: 03-1234567.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PRIVACY PAGE ===== -->
+<div class="page" id="page-privacy">
+  <div class="page-hero">
+    <h1>&#128272; מדיניות פרטיות</h1>
+    <p>עודכן לאחרונה: אפריל 2026</p>
+  </div>
+  <div class="page-content" style="max-width:800px; margin:0 auto;">
+    <div class="about-section">
+      <h2>1. כללי</h2>
+      <p>חברת לנדיל בע"מ (להלן: "החברה" או "אנחנו") מכבדת את פרטיותם של המשתמשים באתר LanDeal (להלן: "האתר"). מדיניות פרטיות זו מסבירה כיצד אנו אוספים, משתמשים, מאחסנים ומגנים על המידע האישי שלך. השימוש באתר מהווה הסכמה למדיניות זו.</p>
+
+      <h2>2. המידע שאנו אוספים</h2>
+      <p><strong>מידע שנמסר על ידך:</strong> בעת הרשמה לאתר – שם מלא, כתובת דוא"ל, מספר טלפון וסיסמה. בעת ביצוע עסקה – פרטי זיהוי, כתובת, ופרטים הנדרשים לביצוע העסקה. בעת פניה אלינו – שם, פרטי קשר ותוכן הפנייה.</p>
+      <p><strong>מידע שנאסף אוטומטית:</strong> כתובת IP, סוג דפדפן ומערכת הפעלה. דפי אתר שנצפו, זמני גלישה ומשך השהייה. מידע על המכשיר בו נעשה שימוש. קובצי עוגיות (Cookies) ומזהים דומים.</p>
+
+      <h2>3. מטרות השימוש במידע</h2>
+      <p>אנו משתמשים במידע האישי למטרות הבאות: הפעלת האתר ומתן השירותים, לרבות עיבוד עסקאות והצגת הצעות מותאמות. ניהול חשבון המשתמש ותקשורת עמו. שיפור השירותים, חווית המשתמש ותוכן האתר. עמידה בדרישות חוקיות ורגולטוריות. מניעת הונאות ושמירה על אבטחת המידע. שליחת עדכונים, הצעות ותוכן שיווקי (בכפוף להסכמת המשתמש).</p>
+
+      <h2>4. שיתוף מידע עם צדדים שלישיים</h2>
+      <p>איננו מוכרים את המידע האישי שלך. אנו עשויים לשתף מידע עם: עורכי דין המלווים את העסקאות. ספקי שירותים טכנולוגיים (אחסון, אבטחה, ניתוח נתונים). גורמים רגולטוריים או ממשלתיים כנדרש בחוק. צדדים לעסקה (מוכרים/רוכשים) – ורק את המידע הנדרש לביצוע העסקה. כל שיתוף מידע מבוצע בכפוף להסכמי סודיות ואבטחת מידע מתאימים.</p>
+
+      <h2>5. אבטחת מידע</h2>
+      <p>אנו נוקטים באמצעי אבטחה סבירים ומקובלים כדי להגן על המידע האישי, לרבות: הצפנת סיסמאות ונתונים רגישים. שימוש בפרוטוקול HTTPS מאובטח. בקרת גישה מוגבלת למידע אישי. גיבוי נתונים סדיר. עם זאת, אין אנו יכולים להבטיח אבטחה מוחלטת, ומשתמשים נדרשים לנקוט באמצעי אבטחה מצדם (שמירה על סודיות הסיסמה, אי-שיתוף פרטי חשבון).</p>
+
+      <h2>6. עוגיות (Cookies)</h2>
+      <p>האתר משתמש בעוגיות לצורך: זיהוי משתמשים חוזרים ושמירת העדפות. ניתוח דפוסי גלישה ושיפור חווית המשתמש. תפעול תקין של האתר. ניתן לשלוט בעוגיות באמצעות הגדרות הדפדפן. חסימת עוגיות עשויה להשפיע על חלק מהפונקציות באתר.</p>
+
+      <h2>7. שמירת המידע</h2>
+      <p>אנו שומרים את המידע האישי למשך הזמן הנדרש למטרות המפורטות במדיניות זו, או כנדרש בחוק. מידע הקשור לעסקאות מקרקעין יישמר לתקופה ארוכה יותר בהתאם לדרישות החוק. לאחר תום תקופת השמירה, המידע יימחק או ייהפך לאנונימי.</p>
+
+      <h2>8. זכויות המשתמש</h2>
+      <p>בהתאם לחוק הגנת הפרטיות, התשמ"א-1981, עומדות לך הזכויות הבאות: זכות עיון – לעיין במידע האישי המוחזק אודותיך. זכות תיקון – לבקש תיקון מידע שגוי. זכות מחיקה – לבקש מחיקת מידע (בכפוף למגבלות חוקיות). זכות התנגדות – להתנגד לשימוש במידע לצורכי דיוור ישיר. לצורך מימוש זכויות אלה, ניתן לפנות אלינו באמצעות פרטי הקשר המפורטים להלן.</p>
+
+      <h2>9. מידע על קטינים</h2>
+      <p>האתר אינו מיועד לקטינים מתחת לגיל 18. איננו אוספים ביודעין מידע אישי מקטינים. אם נודע לנו שנאסף מידע כזה, נמחק אותו באופן מיידי.</p>
+
+      <h2>10. שינויים במדיניות</h2>
+      <p>החברה רשאית לעדכן מדיניות זו מעת לעת. שינויים מהותיים יפורסמו באתר ויישלח על כך עדכון למשתמשים רשומים. מומלץ לעיין במדיניות זו מעת לעת.</p>
+
+      <h2>11. יצירת קשר</h2>
+      <p>לשאלות, בירורים או בקשות בנוגע למדיניות הפרטיות או למידע האישי שלך, ניתן לפנות אלינו: דוא"ל: privacy@landeal.co.il | טלפון: 03-1234567 | כתובת: רחוב הברזל 30, תל אביב.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ACCESSIBILITY PAGE ===== -->
+<div class="page" id="page-accessibility">
+  <div class="page-hero">
+    <h1>&#9855; הצהרת נגישות</h1>
+    <p>עודכן לאחרונה: אפריל 2026</p>
+  </div>
+  <div class="page-content" style="max-width:800px; margin:0 auto;">
+    <div class="about-section">
+      <h2>1. מחויבותנו לנגישות</h2>
+      <p>חברת לנדיל בע"מ מחויבת להנגשת האתר והשירותים הדיגיטליים שלה לכלל הציבור, לרבות אנשים עם מוגבלויות. אנו פועלים להתאמת האתר לתקן הישראלי (ת"י 5568) ולהנחיות WCAG 2.1 ברמת AA, בהתאם לחוק שוויון זכויות לאנשים עם מוגבלות, התשנ"ח-1998, ותקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג-2013.</p>
+
+      <h2>2. התאמות נגישות שבוצעו</h2>
+      <p>במסגרת מחויבותנו, בוצעו באתר ההתאמות הבאות:</p>
+      <p><strong>מבנה ותוכן:</strong> שימוש בכותרות היררכיות מסודרות לניווט נוח. תיאורי טקסט חלופי (alt) לתמונות ואלמנטים גרפיים. שפה ברורה ופשוטה ככל האפשר. ניגודיות צבעים מספקת בין טקסט לרקע.</p>
+      <p><strong>ניווט ותפעול:</strong> ניווט באמצעות מקלדת בכל חלקי האתר. תפריט ניווט ברור ועקבי. כפתורים ושדות טופס מתויגים כראוי. הודעות שגיאה ברורות בטפסים.</p>
+      <p><strong>תצוגה:</strong> עיצוב רספונסיבי המותאם לגדלי מסך שונים. תמיכה בהגדלת טקסט באמצעות הדפדפן. ניגודיות צבעים התואמת את דרישות התקן.</p>
+
+      <h2>3. טכנולוגיות נתמכות</h2>
+      <p>האתר נבנה לתמוך בטכנולוגיות המסייעות הנפוצות, לרבות: קוראי מסך (NVDA, JAWS, VoiceOver). תוכנות הגדלה. ניווט באמצעות מקלדת בלבד. הדפדפנים הנתמכים: Chrome, Firefox, Safari, Edge בגרסאותיהם העדכניות.</p>
+
+      <h2>4. מגבלות ידועות</h2>
+      <p>למרות מאמצינו, ייתכן שחלק מהתכנים באתר אינם נגישים במלואם. אנו עובדים באופן שוטף לשיפור הנגישות ולזיהוי ותיקון בעיות. אם נתקלתם בבעיית נגישות, נשמח לשמוע מכם כדי שנוכל לטפל בכך בהקדם.</p>
+
+      <h2>5. רכז נגישות</h2>
+      <p>מינינו רכז נגישות שתפקידו לוודא את התאמת האתר ולטפל בפניות בנושא נגישות:</p>
+      <p><strong>שם:</strong> רכז הנגישות, LanDeal<br>
+      <strong>דוא"ל:</strong> accessibility@landeal.co.il<br>
+      <strong>טלפון:</strong> 03-1234567<br>
+      <strong>כתובת:</strong> רחוב הברזל 30, תל אביב</p>
+
+      <h2>6. דיווח על בעיית נגישות</h2>
+      <p>אם נתקלת בבעיית נגישות באתר, אנא פנה אלינו ונטפל בכך בהקדם האפשרי. בפנייתך, אנא פרט: תיאור הבעיה. העמוד בו נתקלת בבעיה. סוג הדפדפן והטכנולוגיה המסייעת בה אתה משתמש. אנו מתחייבים לתת מענה ראשוני לכל פניית נגישות בתוך 5 ימי עסקים.</p>
+
+      <h2>7. הסדרי נגישות פיזיים</h2>
+      <p>משרדי החברה ברחוב הברזל 30, תל אביב, נגישים לאנשים עם מוגבלויות ועומדים בדרישות התקן, לרבות: גישה נגישה לבניין. מעלית נגישה. חניית נכים. שירותים נגישים.</p>
+
+      <h2>8. עדכון הצהרת הנגישות</h2>
+      <p>הצהרה זו מתעדכנת באופן שוטף בהתאם לשינויים באתר ולשיפורי נגישות שמבוצעים. תאריך עדכון אחרון: אפריל 2026.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo-text" style="font-size:24px; margin-bottom:12px;">Lan<span>Deal</span></div>
+      <p>הפלטפורמה הראשונה בעולם למכירת קרקעות מבוזרות. השקעה חכמה, מגוונת ובטוחה.</p>
+    </div>
+    <div class="footer-col">
+      <h4>ניווט</h4>
+      <a onclick="navigate('home')">דף הבית</a>
+      <a onclick="navigate('buyerChoice')">רוכשי קרקע</a>
+      <a onclick="navigate('sellerChoice')">מוכרי קרקע</a>
+    </div>
+    <div class="footer-col">
+      <h4>מידע</h4>
+      <a onclick="navigate('about')">אודות</a>
+      <a onclick="navigate('glossary')">מילון מושגים</a>
+      <a onclick="navigate('contact')">צור קשר</a>
+    </div>
+    <div class="footer-col">
+      <h4>משפטי</h4>
+      <a onclick="navigate('terms')">תנאי שימוש</a>
+      <a onclick="navigate('privacy')">מדיניות פרטיות</a>
+      <a onclick="navigate('accessibility')">הצהרת נגישות</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2026 LanDeal. כל הזכויות שמורות.
+  </div>
+</footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
