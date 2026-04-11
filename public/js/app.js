@@ -4,6 +4,29 @@ let currentUser = null;
 let currentPage = 'home';
 let allListings = [];
 
+// ===== URL ROUTE MAP =====
+const routeToPage = {
+  '/': 'home',
+  '/home': 'home',
+  '/buyer': 'buyerChoice',
+  '/land-for-apartment': 'landForApartment',
+  '/land-for-investment': 'landForInvestment',
+  '/seller': 'sellerChoice',
+  '/seller/private': 'sellerPrivate',
+  '/seller/system': 'sellerSystem',
+  '/seller/marketer': 'sellerMarketer',
+  '/profile': 'profile',
+  '/about': 'about',
+  '/glossary': 'glossary',
+  '/contact': 'contact',
+  '/terms': 'terms',
+  '/privacy': 'privacy',
+  '/accessibility': 'accessibility',
+};
+const pageToRoute = Object.fromEntries(
+  Object.entries(routeToPage).filter(([k]) => k !== '/').map(([k, v]) => [v, k])
+);
+
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('token');
@@ -11,6 +34,15 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchUser(token);
   }
   loadListings();
+
+  // Handle browser back/forward
+  window.addEventListener('popstate', (e) => {
+    handleRoute(e.state);
+  });
+
+  // Set initial state and navigate to correct page
+  history.replaceState({ page: routeToPage[window.location.pathname] || 'home' }, '', window.location.pathname);
+  handleInitialRoute();
 
   window.addEventListener('scroll', () => {
     document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
@@ -24,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ===== NAVIGATION =====
-function navigate(page) {
+function navigateNoHistory(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const target = document.getElementById('page-' + page);
   if (target) {
@@ -38,6 +70,50 @@ function navigate(page) {
     if (page === 'sellerSystem') loadMyPurchasedLands();
   }
   closeMobileMenu();
+}
+
+function navigate(page) {
+  navigateNoHistory(page);
+  const route = pageToRoute[page] || '/home';
+  if (window.location.pathname !== route) {
+    history.pushState({ page }, '', route);
+  }
+}
+
+function handleRoute(state) {
+  const path = window.location.pathname;
+  const listingMatch = path.match(/^\/listing\/(\d+)$/);
+  if (listingMatch) {
+    const id = parseInt(listingMatch[1]);
+    if (allListings.length > 0) {
+      const listing = allListings.find(l => l.id === id);
+      if (listing) { showListingDetail(id); return; }
+    }
+    navigateNoHistory('home');
+    return;
+  }
+  const page = routeToPage[path] || 'home';
+  navigateNoHistory(page);
+}
+
+function handleInitialRoute() {
+  const path = window.location.pathname;
+  if (path === '/' || path === '/home') return;
+  const listingMatch = path.match(/^\/listing\/(\d+)$/);
+  if (listingMatch) {
+    const id = parseInt(listingMatch[1]);
+    const waitForListings = setInterval(() => {
+      if (allListings.length > 0) {
+        clearInterval(waitForListings);
+        const listing = allListings.find(l => l.id === id);
+        if (listing) showListingDetail(id);
+        else navigateNoHistory('home');
+      }
+    }, 100);
+    return;
+  }
+  const page = routeToPage[path] || 'home';
+  navigateNoHistory(page);
 }
 
 // ===== MOBILE MENU =====
@@ -358,7 +434,8 @@ function showListingDetail(id) {
     <button class="btn btn-outline" style="width:100%;" onclick="navigate('contact')">&#128172; צור קשר לפרטים</button>
   `;
 
-  navigate('listingDetail');
+  navigateNoHistory('listingDetail');
+  history.pushState({ page: 'listingDetail', listingId: id }, '', '/listing/' + id);
 }
 
 // ===== INVESTMENT PACKAGES =====
